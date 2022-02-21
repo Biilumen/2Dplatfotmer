@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))] 
 public class Patrol : MonoBehaviour
 {
     [SerializeField] private Transform _path;
@@ -12,10 +13,12 @@ public class Patrol : MonoBehaviour
     private Transform[] _points;
     private int _currentPoint;
 
+    private const string _run = "Run";
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        _animator.SetBool("Run", true);
+        _animator.SetBool(_run, true);
         _points = new Transform[_path.childCount];
         for (int i = 0; i < _path.childCount; i++)
         {
@@ -24,7 +27,7 @@ public class Patrol : MonoBehaviour
         _enemyScale = transform.localScale;
     }
 
-    void Update()
+    private void Update()
     {
         Transform target = _points[_currentPoint];
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof (Animator))]
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] float _speed;
@@ -13,6 +14,8 @@ public class PlayerControl : MonoBehaviour
     private Animator _animator;
     private bool _grounded;
 
+    private const string _run = "Run";
+    private const string _jump = "Jump";
 
     private void Start()
     {
@@ -28,24 +31,24 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetAxis("Horizontal") < 0)
         {
             _playerScale.x = -1;
-            _animator.SetBool("Run",true);
+            _animator.SetBool(_run, true);
         }
         if  (Input.GetAxis("Horizontal") > 0)
         {
             _playerScale.x = 1;
-            _animator.SetBool("Run", true);
+            _animator.SetBool(_run, true);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_grounded)
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
-                _animator.SetTrigger("Jump");
+                _animator.SetTrigger(_jump);
             }
         }
         if(Input.GetAxis("Horizontal") == 0)
         {
-            _animator.SetBool("Run", false);
+            _animator.SetBool(_run, false);
         }
         transform.localScale = _playerScale;
     }
